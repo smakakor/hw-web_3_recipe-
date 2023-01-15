@@ -6,6 +6,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -28,7 +29,10 @@ public class IngredientController {
             @ApiResponse(responseCode = "200",description = "Ингредиент добален"),
             @ApiResponse(responseCode = "404",description = "Ингредиент не добален")
     })
-    public ResponseEntity<Ingredient> addIngredient(@RequestBody Ingredient ingredient) {
+    public ResponseEntity<?> addIngredient(@RequestBody Ingredient ingredient) {
+        if (StringUtils.isBlank(ingredient.getNameIngredient())) {
+            return ResponseEntity.badRequest().body("Название ингредиента не может быть пустым");
+        }
         ingredientService.addIngredient(ingredient);
         return ResponseEntity.ok(ingredient);
     }
@@ -53,10 +57,9 @@ public class IngredientController {
             @ApiResponse(responseCode = "200",description = "Ингредиент отредоктирован "),
             @ApiResponse(responseCode = "404",description = "Ингредиент не удалось отредоктировать")
     })
-    public ResponseEntity<Ingredient> putIngredient(@PathVariable int id, @RequestBody Ingredient ingredient) {
-        Ingredient ingredientVariable = ingredientService.putIngredient(id, ingredient);
-        if (ingredientVariable == null) {
-            return ResponseEntity.notFound().build();
+    public ResponseEntity<?> putIngredient(@PathVariable int id, @RequestBody Ingredient ingredient) {
+        if (StringUtils.isBlank(ingredient.getNameIngredient())) {
+            return ResponseEntity.badRequest().body("Название ингредиента не может быть пустым");
         }
         return ResponseEntity.ok(ingredient);
     }

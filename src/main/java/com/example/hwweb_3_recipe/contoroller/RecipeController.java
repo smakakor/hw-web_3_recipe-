@@ -9,6 +9,7 @@ import io.swagger.v3.oas.annotations.Parameters;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,7 +31,10 @@ public class RecipeController {
             @ApiResponse(responseCode = "200",description = "Рецепт добален"),
             @ApiResponse(responseCode = "404",description = "Рецепт не добален")
     })
-    public ResponseEntity<Recipe> addRecipe(@RequestBody Recipe recipe) {
+    public ResponseEntity<?> addRecipe(@RequestBody Recipe recipe) {
+        if (StringUtils.isBlank(recipe.getNameRecipe())) {
+            return ResponseEntity.badRequest().body("Название рецепта не может быть пустым");
+        }
         recipeService.addRecipe(recipe);
         return ResponseEntity.ok(recipe);
     }
@@ -55,10 +59,9 @@ public class RecipeController {
             @ApiResponse(responseCode = "200",description = "Рецепт отредоктирован "),
             @ApiResponse(responseCode = "404",description = "Рецепт не удалось отредоктировать")
     })
-    public ResponseEntity<Recipe> putIngredient(@PathVariable int id, @RequestBody Recipe recipe) {
-        Recipe recipeVariable = recipeService.putRecipe(id, recipe);
-        if (recipeVariable == null) {
-            return ResponseEntity.notFound().build();
+    public ResponseEntity<?> putIngredient(@PathVariable int id, @RequestBody Recipe recipe) {
+        if (StringUtils.isBlank(recipe.getNameRecipe())) {
+            return ResponseEntity.badRequest().body("Название рецепта не может быть пустым");
         }
         return ResponseEntity.ok(recipe);
     }
