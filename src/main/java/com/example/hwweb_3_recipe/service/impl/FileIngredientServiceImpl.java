@@ -4,6 +4,7 @@ import com.example.hwweb_3_recipe.service.FileIngredientService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -44,6 +45,11 @@ public class FileIngredientServiceImpl implements FileIngredientService {
             e.printStackTrace();
             throw new RuntimeException(e);
         }
+    }
+
+    @Override
+    public File getDataFile() {
+        return new File(pathFileIngredient + "/" + nameFileIngredient);
     }
 
 }
