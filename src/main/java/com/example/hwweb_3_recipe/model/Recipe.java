@@ -15,6 +15,18 @@ public class Recipe {
     private int timeCooking;
     private ArrayList<Ingredient> listIngredient = new ArrayList<>();
     private ArrayList<String> stepsCooking = new ArrayList<>(); // шаги приготовления
+    public StringBuilder stepsToString() {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < stepsCooking.size(); i++)
+            sb.append(stepsCooking.get(i) + '\n');
+        return sb;
+    }
+    public StringBuilder ingredientsToString() {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < listIngredient.size(); i++)
+            sb.append(listIngredient.get(i).toString() + '\n');
+        return sb;
+    }
 
 
 }

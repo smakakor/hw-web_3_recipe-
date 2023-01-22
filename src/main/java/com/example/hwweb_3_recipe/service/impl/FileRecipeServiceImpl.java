@@ -50,4 +50,12 @@ public class FileRecipeServiceImpl implements FileRecipeService {
     public File getDataFile() {
         return new File(pathFileRecipe + "/" + nameFileRecipe);
     }
+    @Override
+    public Path createTempFile(String suffix) {
+        try {
+            return Files.createTempFile(Path.of(pathFileRecipe), "tempFile", suffix);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }
